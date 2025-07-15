@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجوزات الأجهزة</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #8db4a5;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+            --border-color: #d1d5db;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Segoe UI', byt, byt, byt, byt;
+            background-image: url('a.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 270px;
+            color: #1f2937;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            margin: 10px 0 0 0;
+            font-weight: 500;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 60px 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 20px 25px;
+            border: 2px solid #e5e5e5;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            background: white;
+            text-align: right;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--success-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(141, 180, 165, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+            text-align: right;
+        }
+
+        /* Remove arrows from number inputs */
+        .form-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-group input[type="number"]::-webkit-outer-spin-button,
+        .form-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .submit-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-transform: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(141, 180, 165, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(141, 180, 165, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .bookings-section {
+            margin-top: 60px;
+            display: none; /* Hide the table from frontend */
+        }
+
+        .bookings-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        table th {
+            background: var(--success-color);
+            color: white;
+            padding: 20px 15px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        table td {
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 1rem;
+        }
+
+        .bookings-table tr:hover {
+            background: rgba(141, 180, 165, 0.1);
+        }
+
+        .export-section {
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .export-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .clear-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.4);
+        }
+
+        .month-select {
+            padding: 15px 25px;
+            border: 2px solid #e5e5e5;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            background: white;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 40px 30px;
+                border-radius: 30px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1.2rem;
+            }
+
+            .export-controls {
+                flex-direction: column;
+            }
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #666;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: left 1rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-left: 3rem;
+        }
+
+        .datetime-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .datetime-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            text-align: right;
+        }
+
+        .readonly-time {
+            background-color: #f8f9fa !important;
+            cursor: not-allowed !important;
+        }
+
+        .status-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            display: none; /* Hide the status indicator */
+        }
+    </style>
+</head>
+<body>
+    <div class="status-indicator" id="statusIndicator">
+        تحديث تلقائي...
+    </div>
+
+    <div class="container">
+        <div class="header">
+            
+        </div>
+
+        <div class="form-container">
+            <form id="bookingForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <input type="text" id="userName" name="userName" placeholder="الاسم :" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="رقم الجوال :" required maxlength="10">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" id="age" name="age" placeholder="العمر :" required min="1" max="99">
+                    </div>
+
+                    <div class="form-group">
+                        <select id="gender" name="gender" required>
+                            <option value="">الجنس</option>
+                            <option value="male">ذكر</option>
+                            <option value="female">أنثى</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <select id="pcNumber" name="pcNumber" required>
+                            <option value="">رقم الجهاز</option>
+                            <!-- PC numbers from 1 to 24 -->
+                            <option value="PC1">PC1</option>
+                            <option value="PC2">PC2</option>
+                            <option value="PC3">PC3</option>
+                            <option value="PC4">PC4</option>
+                            <option value="PC5">PC5</option>
+                            <option value="PC6">PC6</option>
+                            <option value="PC7">PC7</option>
+                            <option value="PC8">PC8</option>
+                            <option value="PC9">PC9</option>
+                            <option value="PC10">PC10</option>
+                            <option value="PC11">PC11</option>
+                            <option value="PC12">PC12</option>
+                            <option value="PC13">PC13</option>
+                            <option value="PC14">PC14</option>
+                            <option value="PC15">PC15</option>
+                            <option value="PC16">PC16</option>
+                            <option value="PC17">PC17</option>
+                            <option value="PC18">PC18</option>
+                            <option value="PC19">PC19</option>
+                            <option value="PC20">PC20</option>
+                            <option value="PC21">PC21</option>
+                            <option value="PC22">PC22</option>
+                            <option value="PC23">PC23</option>
+                            <option value="PC24">PC24</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <select id="duration" name="duration" required>
+                            <option value="">مدة الحجز</option>
+                            <option value="2">2 دقيقة</option>
+                            <option value="30">30 دقيقة (0.5 ساعة)</option>
+                            <option value="60">ساعة واحدة</option>
+                            <option value="120">ساعتان</option>
+                            <option value="180">3 ساعات</option>
+                            <option value="240">4 ساعات</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="datetime-grid">
+                            <div>
+                                <div class="datetime-label">التاريخ</div>
+                                <input type="date" id="bookingDate" name="bookingDate" required>
+                            </div>
+                            <div>
+                                <div class="datetime-label">الوقت</div>
+                                <input type="text" id="bookingTime" name="bookingTime" readonly class="readonly-time">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">تأكيد الحجز</button>
+            </form>
+
+            <!-- Export section with only export button visible -->
+            <div class="export-section">
+                <div class="export-controls">
+                    <button onclick="exportToExcel()" class="export-btn">تصدير جميع البيانات إلى Excel</button>
+                    <button onclick="clearAllExpiredReservations()" class="clear-btn" style="display: none;">مسح الحجوزات المنتهية</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bookings-section">
+            <h2 class="bookings-title">سجل الحجوزات</h2>
+            <table class="bookings-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>رقم الجوال</th>
+                        <th>العمر</th>
+                        <th>الجنس</th>
+                        <th>رقم الجهاز</th>
+                        <th>المدة (ساعة)</th>
+                        <th>التاريخ</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    <!-- Booking data will go here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        const form = document.getElementById('bookingForm');
+        const bookingsTableBody = document.getElementById('bookingsTableBody');
+        const pcSelect = document.getElementById('pcNumber');
+        const userNameInput = document.getElementById('userName');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const ageInput = document.getElementById('age');
+        const bookingDateInput = document.getElementById('bookingDate');
+        const bookingTimeInput = document.getElementById('bookingTime');
+        const statusIndicator = document.getElementById('statusIndicator');
+        
+        // Load saved bookings from localStorage on page load
+        let bookingsData = JSON.parse(localStorage.getItem('bookingsData')) || [];
+
+        // Set default date and update current time
+        function setCurrentDateTime() {
+            const now = new Date();
+            const currentDate = now.toISOString().split('T')[0];
+            const currentTime = now.toTimeString().slice(0, 5);
+            
+            // Format time in Arabic
+            const timeInArabic = formatTimeInArabic(now);
+            
+            // Set default date to today if not already set
+            if (!bookingDateInput.value) {
+                bookingDateInput.value = currentDate;
+            }
+            
+            bookingTimeInput.value = timeInArabic;
+            
+            // Store the actual time value for backend processing
+            bookingTimeInput.dataset.actualTime = currentTime;
+        }
+
+        // Function to format time in Arabic
+        function formatTimeInArabic(date) {
+            const hours = date.getHours();
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const hour12 = hours % 12 || 12;
+            const period = hours >= 12 ? 'مساءً' : 'صباحاً';
+            
+            return `${hour12}:${minutes} ${period}`;
+        }
+
+        // Function to convert 24-hour time to 12-hour format in Arabic
+        function convertTo12Hour(time24) {
+            if (!time24) return '';
+            
+            const [hours, minutes] = time24.split(':');
+            const hour24 = parseInt(hours);
+            const hour12 = hour24 % 12 || 12;
+            const period = hour24 >= 12 ? 'مساءً' : 'صباحاً';
+            
+            return `${hour12}:${minutes} ${period}`;
+        }
+
+        // Add input validation
+        userNameInput.addEventListener('input', function(e) {
+            // Remove any non-letter characters (including numbers)
+            e.target.value = e.target.value.replace(/[^A-Za-zأ-ي\s]/g, '');
+        });
+
+        phoneNumberInput.addEventListener('input', function(e) {
+            // Only allow numbers, limit to 10 digits
+            e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+
+        ageInput.addEventListener('input', function(e) {
+            // Only allow numbers, limit to 2 digits
+            e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 2);
+        });
+
+        // IMPROVED: More robust function to check if a PC reservation has expired
+        function isReservationExpired(booking) {
+            try {
+                // If booking is missing critical data, it's expired
+                if (!booking || !booking.pcNumber || !booking.date || !booking.duration || !booking.time) {
+                    return true;
+                }
+                
+                const now = new Date();
+                const today = now.toISOString().split('T')[0];
+                
+                // If booking is from a past date, it's definitely expired
+                if (booking.date < today) {
+                    return true;
+                }
+                
+                // For today's bookings, check the exact time
+                if (booking.date === today) {
+                    // Create booking start time
+                    const bookingDateTime = new Date(`${booking.date}T${booking.time}:00`);
+                    
+                    // Check if date is valid
+                    if (isNaN(bookingDateTime.getTime())) {
+                        return true;
+                    }
+                    
+                    // Calculate expiration time (start + duration in minutes)
+                    const expirationTime = new Date(bookingDateTime.getTime() + (booking.duration * 60 * 1000));
+                    
+                    // Add a small buffer (1 minute) to ensure cleanup happens
+                    const bufferTime = new Date(expirationTime.getTime() + (1 * 60 * 1000));
+                    
+                    // Check if current time is past expiration
+                    return now.getTime() > bufferTime.getTime();
+                }
+                
+                // Future dates are not expired
+                return false;
+                
+            } catch (error) {
+                console.error('Error checking expiration:', error);
+                // Any error means it should be expired
+                return true;
+            }
+        }
+
+        // IMPROVED: More aggressive cleanup function
+        function cleanupExpiredReservations() {
+            const initialCount = bookingsData.length;
+            
+            try {
+                // Filter out expired bookings and validate data
+                bookingsData = bookingsData.filter(booking => {
+                    // Remove any booking with missing or invalid data
+                    if (!booking || typeof booking !== 'object') {
+                        return false;
+                    }
+                    
+                    if (!booking.pcNumber || !booking.date || !booking.duration || !booking.time) {
+                        return false;
+                    }
+                    
+                    // Remove expired bookings
+                    if (isReservationExpired(booking)) {
+                        return false;
+                    }
+                    
+                    // Keep valid, non-expired bookings
+                    return true;
+                });
+                
+                // Always save to localStorage after filtering
+                localStorage.setItem('bookingsData', JSON.stringify(bookingsData));
+                
+                // Always update UI
+                updatePCDropdown();
+                rebuildBookingsTable();
+                
+                const removedCount = initialCount - bookingsData.length;
+                if (removedCount > 0) {
+                    console.log(`تم مسح ${removedCount} حجز منتهي الصلاحية`);
+                    updateStatusIndicator(`تم مسح ${removedCount} حجز منتهي`);
+                } else {
+                    updateStatusIndicator('جميع الأجهزة محدثة');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في تنظيف الحجوزات:', error);
+                // In case of error, clear all data to prevent corruption
+                bookingsData = [];
+                localStorage.setItem('bookingsData', JSON.stringify(bookingsData));
+                updatePCDropdown();
+                rebuildBookingsTable();
+                updateStatusIndicator('تم إعادة تعيين النظام');
+            }
+        }
+
+        // NEW: Function to manually clear all expired reservations (functionality preserved)
+        function clearAllExpiredReservations() {
+            const initialCount = bookingsData.length;
+            cleanupExpiredReservations();
+            const finalCount = bookingsData.length;
+            const removedCount = initialCount - finalCount;
+            
+            if (removedCount > 0) {
+                console.log(`تم مسح ${removedCount} حجز منتهي الصلاحية`);
+                updateStatusIndicator(`تم مسح ${removedCount} حجز منتهي`);
+            } else {
+                console.log('لا توجد حجوزات منتهية الصلاحية');
+                updateStatusIndicator('لا توجد حجوزات منتهية');
+            }
+        }
+
+        // NEW: Function to update status indicator
+        function updateStatusIndicator(message) {
+            statusIndicator.textContent = message;
+            statusIndicator.style.background = 'rgba(34, 197, 94, 0.9)';
+            
+            setTimeout(() => {
+                statusIndicator.style.background = 'rgba(0, 0, 0, 0.8)';
+                statusIndicator.textContent = 'تحديث تلقائي...';
+            }, 2000);
+        }
+
+        // Function to rebuild the bookings table
+        function rebuildBookingsTable() {
+            // Clear existing table
+            bookingsTableBody.innerHTML = '';
+            
+            // Re-populate with current data
+            bookingsData.forEach(booking => {
+                const row = document.createElement('tr');
+                const timeDisplay = booking.displayTime || convertTo12Hour(booking.time);
+                const durationInHours = (booking.duration / 60).toFixed(2);
+                
+                row.innerHTML = `
+                    <td>${booking.name}</td>
+                    <td>${booking.phone}</td>
+                    <td>${booking.age}</td>
+                    <td>${booking.gender === 'male' ? 'ذكر' : 'أنثى'}</td>
+                    <td>${booking.pcNumber}</td>
+                    <td>${durationInHours} ساعة</td>
+                    <td>${booking.date || ''}</td>
+                    <td>${timeDisplay}</td>
+                `;
+                bookingsTableBody.appendChild(row);
+            });
+        }
+
+        // IMPROVED: More robust PC dropdown update
+        function updatePCDropdown() {
+            const allPCs = Array.from(pcSelect.options);
+            let availableCount = 0;
+            
+            allPCs.forEach(option => {
+                const pcNumber = option.value;
+                if (pcNumber === '') return; // Skip the placeholder option
+
+                // Check for active (non-expired) reservation
+                const activeReservation = bookingsData.find(booking => {
+                    if (booking.pcNumber === pcNumber) {
+                        return !isReservationExpired(booking);
+                    }
+                    return false;
+                });
+                
+                if (activeReservation) {
+                    option.disabled = true;
+                    option.style.backgroundColor = '#fef2f2';
+                    option.style.color = '#dc2626';
+                    option.textContent = `${pcNumber} (محجوز)`;
+                } else {
+                    option.disabled = false;
+                    option.style.backgroundColor = '#f0fdf4';
+                    option.style.color = '#16a34a';
+                    option.textContent = `${pcNumber} (متاح)`;
+                    availableCount++;
+                }
+            });
+            
+            console.log(`الأجهزة المتاحة: ${availableCount} من 24`);
+        }
+
+        // Function to get month name in Arabic
+        function getArabicMonthName(monthNumber) {
+            const months = {
+                1: 'يناير', 2: 'فبراير', 3: 'مارس', 4: 'أبريل',
+                5: 'مايو', 6: 'يونيو', 7: 'يوليو', 8: 'أغسطس',
+                9: 'سبتمبر', 10: 'أكتوبر', 11: 'نوفمبر', 12: 'ديسمبر'
+            };
+            return months[monthNumber];
+        }
+
+        // Function to calculate PC usage statistics for a month
+        function calculatePCUsage(monthData) {
+            const pcUsage = {};
+            
+            // Initialize all PCs with 0 usage
+            for (let i = 1; i <= 24; i++) {
+                pcUsage[`PC${i}`] = 0;
+            }
+            
+            // Calculate total minutes for each PC
+            monthData.forEach(booking => {
+                if (pcUsage.hasOwnProperty(booking.pcNumber)) {
+                    pcUsage[booking.pcNumber] += booking.duration;
+                }
+            });
+            
+            return pcUsage;
+        }
+
+        // Function to handle form submission and save data
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Clean up expired reservations before processing new booking
+            cleanupExpiredReservations();
+
+            // Validate form inputs
+            const name = userNameInput.value.trim();
+            const phone = phoneNumberInput.value.trim();
+            const age = ageInput.value.trim();
+
+            // Validate name (only letters)
+            if (!/^[A-Za-zأ-ي\s]+$/.test(name)) {
+                alert('الاسم يجب أن يحتوي على أحرف فقط!');
+                return;
+            }
+
+            // Validate phone (exactly 10 digits)
+            if (!/^\d{10}$/.test(phone)) {
+                alert('رقم الجوال يجب أن يتكون من 10 أرقام فقط!');
+                return;
+            }
+
+            // Validate age (1-2 digits, 1-99)
+            if (!/^\d{1,2}$/.test(age) || parseInt(age) < 10 || parseInt(age) > 60) {
+                alert('العمر يجب أن يكون رقم من 10 إلى 60!');
+                return;
+            }
+
+            // Get form values
+            const formData = new FormData(form);
+            const bookingData = {
+                id: Date.now(), // Add unique ID for tracking
+                name: formData.get('userName'),
+                phone: formData.get('phoneNumber'),
+                age: formData.get('age'),
+                gender: formData.get('gender'),
+                pcNumber: formData.get('pcNumber'),
+                duration: parseInt(formData.get('duration')),
+                date: formData.get('bookingDate'),
+                time: bookingTimeInput.dataset.actualTime, // Use actual time for calculations
+                displayTime: bookingTimeInput.value, // Store display time for showing
+                timestamp: new Date().toISOString() // Add timestamp for sorting
+            };
+
+            // Check if PC is already reserved at the same date/time and not expired
+            const existingReservation = bookingsData.find(booking => {
+                // Check if it's the same PC, same date
+                if (booking.pcNumber === bookingData.pcNumber && booking.date === bookingData.date) {
+                    // Check if the booking times overlap
+                    const existingStart = new Date(`${booking.date}T${booking.time}:00`);
+                    const existingEnd = new Date(existingStart.getTime() + (booking.duration * 60 * 1000));
+                    const newStart = new Date(`${bookingData.date}T${bookingData.time}:00`);
+                    const newEnd = new Date(newStart.getTime() + (bookingData.duration * 60 * 1000));
+                    
+                    // Check if times overlap and booking is not expired
+                    const timesOverlap = (newStart < existingEnd && newEnd > existingStart);
+                    const notExpired = !isReservationExpired(booking);
+                    
+                    return timesOverlap && notExpired;
+                }
+                return false;
+            });
+
+            if (existingReservation) {
+                alert('هذا الجهاز محجوز في نفس الوقت والتاريخ!');
+                return;
+            }
+
+            // Display the booking in the hidden table (for data storage)
+            const row = document.createElement('tr');
+            const timeDisplay = bookingData.displayTime;
+            const durationInHours = (bookingData.duration / 60).toFixed(2);
+            
+            row.innerHTML = `
+                <td>${bookingData.name}</td>
+                <td>${bookingData.phone}</td>
+                <td>${bookingData.age}</td>
+                <td>${bookingData.gender === 'male' ? 'ذكر' : 'أنثى'}</td>
+                <td>${bookingData.pcNumber}</td>
+                <td>${durationInHours} ساعة</td>
+                <td>${bookingData.date}</td>
+                <td>${timeDisplay}</td>
+            `;
+            bookingsTableBody.appendChild(row);
+
+            // Save the booking data in the array
+            bookingsData.push(bookingData);
+
+            // Store the data in localStorage
+            localStorage.setItem('bookingsData', JSON.stringify(bookingsData));
+
+            // Update PC dropdown availability
+            updatePCDropdown();
+
+            // Reset the form but keep current date/time
+            form.reset();
+            setCurrentDateTime();
+
+            // Show confirmation message
+            alert('تم تأكيد الحجز بنجاح!');
+            updateStatusIndicator('تم إضافة حجز جديد');
+        });
+
+        // Function to export data to Excel (functionality preserved)
+        function exportToExcel() {
+            // Clean up expired reservations before export
+            cleanupExpiredReservations();
+
+            if (bookingsData.length === 0) {
+                console.log('لا توجد بيانات للتصدير');
+                updateStatusIndicator('لا توجد بيانات للتصدير');
+                return;
+            }
+
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            
+            // Group bookings by month
+            const bookingsByMonth = {};
+            
+            bookingsData.forEach(booking => {
+                const bookingDate = new Date(booking.date);
+                const month = bookingDate.getMonth() + 1;
+                const year = bookingDate.getFullYear();
+                const monthKey = `${year}-${month}`;
+                
+                if (!bookingsByMonth[monthKey]) {
+                    bookingsByMonth[monthKey] = [];
+                }
+                bookingsByMonth[monthKey].push(booking);
+            });
+
+            // Create a sheet for each month that has data
+            const monthlyStats = {};
+            
+            Object.keys(bookingsByMonth).sort().forEach(monthKey => {
+                const [year, month] = monthKey.split('-');
+                const monthData = bookingsByMonth[monthKey];
+                const monthName = getArabicMonthName(parseInt(month));
+                
+                // Create bookings sheet for this month
+                const bookingsWsData = [
+                    ['الاسم', 'رقم الجوال', 'العمر', 'الجنس', 'رقم الجهاز', 'المدة (ساعة)', 'التاريخ', 'الوقت']
+                ];
+
+                monthData.forEach(booking => {
+                    // Use display time if available, otherwise convert to Arabic format
+                    const timeDisplay = booking.displayTime || convertTo12Hour(booking.time);
+                    // Convert minutes to hours with 2 decimal places
+                    const durationInHours = (booking.duration / 60).toFixed(2);
+                    
+                    bookingsWsData.push([
+                        booking.name,
+                        booking.phone,
+                        booking.age,
+                        booking.gender === 'male' ? 'ذكر' : 'أنثى',
+                        booking.pcNumber,
+                        durationInHours,
+                        booking.date,
+                        timeDisplay
+                    ]);
+                });
+
+                const bookingsWs = XLSX.utils.aoa_to_sheet(bookingsWsData);
+                
+                // Center align all cells
+                const range = XLSX.utils.decode_range(bookingsWs['!ref']);
+                for (let R = range.s.r; R <= range.e.r; ++R) {
+                    for (let C = range.s.c; C <= range.e.c; ++C) {
+                        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                        if (!bookingsWs[cellAddress]) continue;
+                        if (!bookingsWs[cellAddress].s) bookingsWs[cellAddress].s = {};
+                        bookingsWs[cellAddress].s.alignment = { horizontal: 'center', vertical: 'center' };
+                    }
+                }
+                
+                XLSX.utils.book_append_sheet(wb, bookingsWs, `${monthName}_${year}`);
+
+                // Calculate statistics for this month
+                const pcUsage = calculatePCUsage(monthData);
+                const reservationCounts = {};
+                for (let i = 1; i <= 24; i++) {
+                    const pcName = `PC${i}`;
+                    reservationCounts[pcName] = monthData.filter(booking => booking.pcNumber === pcName).length;
+                }
+
+                monthlyStats[monthKey] = {
+                    monthName,
+                    year,
+                    pcUsage,
+                    reservationCounts,
+                    totalReservations: monthData.length,
+                    totalMinutes: Object.values(pcUsage).reduce((sum, minutes) => sum + minutes, 0)
+                };
+            });
+
+            // Create comprehensive statistics sheet
+            const statsWsData = [
+                ['الشهر', 'السنة', 'رقم الجهاز', 'إجمالي الساعات', 'عدد الحجوزات']
+            ];
+
+            Object.values(monthlyStats).forEach(monthStat => {
+                for (let i = 1; i <= 24; i++) {
+                    const pcName = `PC${i}`;
+                    const hours = (monthStat.pcUsage[pcName] / 60).toFixed(2);
+                    const reservations = monthStat.reservationCounts[pcName];
+                    
+                    statsWsData.push([
+                        monthStat.monthName,
+                        monthStat.year,
+                        pcName,
+                        hours,
+                        reservations
+                    ]);
+                }
+            });
+
+            const statsWs = XLSX.utils.aoa_to_sheet(statsWsData);
+            XLSX.utils.book_append_sheet(wb, statsWs, 'إحصائيات شاملة');
+
+            // Generate filename with current date
+            const now = new Date();
+            const filename = `device_bookings_${now.getFullYear()}_${(now.getMonth() + 1).toString().padStart(2, '0')}_${now.getDate().toString().padStart(2, '0')}.xlsx`;
+
+            // Save the file
+            XLSX.writeFile(wb, filename);
+            updateStatusIndicator('تم تصدير البيانات');
+        }
+
+        // IMPROVED: More frequent updates and better initialization
+        // Update time every second
+        setInterval(setCurrentDateTime, 1000);
+        
+        // Check for expired reservations every 5 seconds (more frequent)
+        setInterval(cleanupExpiredReservations, 5000);
+
+        // Initialize the form when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تم تحميل الصفحة - بدء التهيئة');
+            
+            // Set current date and time
+            setCurrentDateTime();
+            
+            // AGGRESSIVE: Clear any corrupted data first
+            try {
+                const storedData = localStorage.getItem('bookingsData');
+                if (storedData) {
+                    const parsedData = JSON.parse(storedData);
+                    if (Array.isArray(parsedData)) {
+                        bookingsData = parsedData;
+                    } else {
+                        // Data is corrupted, clear it
+                        bookingsData = [];
+                        localStorage.setItem('bookingsData', JSON.stringify(bookingsData));
+                    }
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل البيانات المحفوظة:', error);
+                bookingsData = [];
+                localStorage.setItem('bookingsData', JSON.stringify(bookingsData));
+            }
+            
+            // Aggressive cleanup on page load
+            cleanupExpiredReservations();
+            
+            // Multiple cleanup attempts to ensure all expired reservations are cleared
+            setTimeout(() => cleanupExpiredReservations(), 1000);
+            setTimeout(() => cleanupExpiredReservations(), 3000);
+            setTimeout(() => cleanupExpiredReservations(), 5000);
+            
+            console.log('تم الانتهاء من التهيئة');
+            updateStatusIndicator('النظام جاهز');
+        });
+
+        // Add beforeunload event to clean up before page close
+        window.addEventListener('beforeunload', function() {
+            cleanupExpiredReservations();
+        });
+
+        // Add visibility change event to clean up when tab becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                cleanupExpiredReservations();
+            }
+        });
+
+        // Add keyboard shortcuts for the hidden functions (optional)
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+E for Export (hidden)
+            if (e.ctrlKey && e.key === 'e') {
+                e.preventDefault();
+                exportToExcel();
+            }
+            // Ctrl+D for Clear expired (hidden)
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                clearAllExpiredReservations();
+            }
+        });
+    </script>
+</body>
+</html>
